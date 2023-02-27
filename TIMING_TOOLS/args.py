@@ -4,7 +4,7 @@ import os
 
 class get:
     parser = argparse.ArgumentParser(description="This script parses the stout_espc.list file to display a summary of UFS forecast timings")
-    parser.add_argument('-d', '--directory', action='store', default='RTs', nargs = 1, help="top directory to search for stout_espc.list files")
+    parser.add_argument('-d', '--directory', action='store', default='NeilBarton', nargs = 1, help="top directory to search for stout_espc.list files")
     parser.add_argument('-sb', '--sortby', action='store', default=['MINpDAY'], nargs = 1, help='header to sort results, default is MINpDAY')
     parser.add_argument('-m', '--med', action='store_true', help='show mediator MPI, PE and Timings')
     parser.add_argument('-s', '--sec', action='store_true', help='show seconds for timings instead of Minutes Per Day')
@@ -18,8 +18,14 @@ class get:
     ####################################
     def __new__(self, args = parser.parse_args()):
         TOPDIR = args.directory
-        if TOPDIR == 'RTs':
-            self.TOPDIR = os.environ['NPB_WORKDIR'] + '/RUNs/UFS'
+        if TOPDIR == 'NeilBarton':
+            HOME = os.environ['HOME']
+            if 'neil.barton' not in HOME.lower():
+                print('must supply a directory in script')
+                print('./UFS-timing-tools.py -d $YOUR_DIRECTORY')
+                exit(1)
+            else:
+                self.TOPDIR = os.environ['NPB_WORKDIR'] + '/RUNs/UFS'
         else:
             self.TOPDIR = TOPDIR[0]
         self.SHOW_MED =  args.med
