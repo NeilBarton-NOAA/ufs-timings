@@ -86,6 +86,7 @@ def print_summary(df, ARGS):
     REMOVE_HEAD_PRINT = []
     for C in HEAD_COMPS: 
         HEAD_PRINT.append(C+'mpi-t')
+        HEAD_PRINT.append(C+'dt')
         for SM in df['COMPS_SAMEPETS'][1]:
             if C not in SM:
                 HEAD_PRINT.append(C+'mpi-t')

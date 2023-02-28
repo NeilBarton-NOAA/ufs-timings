@@ -10,9 +10,9 @@ class get:
     parser.add_argument('-s', '--sec', action='store_true', help='show seconds for timings instead of Minutes Per Day')
     parser.add_argument('-per', '--percent', action='store_true', help='show percentage for timings instead of Minutes Per Day')
     parser.add_argument('-io', '--io', action='store_true', help='show ATM IO timings, ATM io layout, and OCN io layout')
-    parser.add_argument('-xy', '--xylayout', action='store_true', help='show X,Y mpi layout for FV3')
     parser.add_argument('-l', '--loop', action='store_true', help='show what coupling loop component is on')
     parser.add_argument('-pe', '--pes', action='store_true', help='show PEs for components')
+    parser.add_argument('-xy', '--xylayout', action='store_false', help='do not show X,Y mpi layout for FV3')
     parser.add_argument('-p', '--plot', action='store_true', default=None, help='plot Secs for total model')
     parser.add_argument('-pc', '--plot_components', action='store_true', default=None, help='plot Secs for components')
     ####################################

@@ -54,8 +54,7 @@ def read_model_configure(dir_name):
         if 'restart_interval:' in line:
             DICT['RESTART_N'] = int(line.split('restart_interval:')[1].strip().split(' ')[0])
         if 'dt_atmos' in line:
-            if line[0:1] == 'dt':
-                DICT['ATMdt'] = int(line.strip('dt_atmos:'))
+            DICT['ATMdt'] = int(line.strip('dt_atmos:'))
     config_file = dir_name + '/input.nml'
     if not os.path.exists(config_file):
         config_file = dir_name + '/gfsfcst.log'
