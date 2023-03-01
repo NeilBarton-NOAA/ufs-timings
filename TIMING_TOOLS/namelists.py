@@ -86,6 +86,11 @@ def read_stdout(dir_name):
                 if 'The total amount of wall time ' in line:
                     DICT['WALLTIMEsec'] = float(line.split('=')[-1]) 
                     DICT['WALLTIME'] = round(float(line.split('=')[-1]) / 3600.,2)
+            elif (os.path.basename(config_file) == 'gfsfcst.log'):
+                if 'Total runtime ' in line:
+                    DICT['WALLTIMEsec'] = float(line.split('runtime ')[-1].split()[1])
+                    DICT['WALLTIME'] = round(float(line.split('runtime ')[-1].split()[1]) / 3600.,2)
+                    break
             else:
                 if 'Total runtime ' in line:
                     DICT['WALLTIMEsec'] = float(line.split('runtime ')[-1].strip())
