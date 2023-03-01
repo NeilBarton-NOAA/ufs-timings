@@ -162,7 +162,11 @@ def print_summary(df, ARGS):
     LOOP = HEAD_PRINT.copy()
     for H in LOOP:
         if (df[H] == df[H][1]).all():
-            TABS = ': \t\t' if len(H) < 5 else ': \t'
+            TABS = ': \t'
+            if len(H) < 5:
+                TABS = ': \t\t'
+            elif len(H) < 6:
+                TABS = ': \t\t'
             SUM = SUM + H + TABS + str(df[H][1]) + '\n'
             HEAD_PRINT.remove(H)
     if PRINT_ATMIO:
