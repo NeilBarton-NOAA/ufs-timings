@@ -9,8 +9,6 @@ import numpy as np
 import os
 import sys
 sys.path.append(os.path.dirname(__file__) + "/TIMING_TOOLS")
-#print(os.path.realpath())
-#sys.path.append("./TIMING_TOOLS")
 import TIMING_TOOLS as tt 
     
 if __name__ == '__main__':
@@ -18,7 +16,7 @@ if __name__ == '__main__':
     
     files = tt.esmfprofile.getfiles(ARGS.TOPDIR)
     # get data from each file/directory maybe parralize this
-    MODEL_SUMMARY, MED_VARS = [], []
+    MODEL_SUMMARY, MODEL_header, MED_VARS = [], [], []
     for i, f in enumerate(files):
         # set up dictionary
         print(i+1, os.path.dirname(f))
@@ -46,30 +44,29 @@ if __name__ == '__main__':
         
         # calc minute per day for forecast: goal is 8 minutes per day
         if 'WALLTIMEsec' in DICT.keys() and 'TAU' in DICT.keys():
-            #print((DICT['WALLTIMEsec'] / 60.0), (DICT['TAU'] / 24.0)) 
-            #print(round((DICT['WALLTIMEsec'] / 60.0) / (DICT['TAU'] / 24.0),1))
-            #exit(1)
             DICT['MINpDAY'] = round((DICT['WALLTIMEsec'] / 60.0) / (DICT['TAU'] / 24.0),1) 
         else:
             DICT['MINpDAY'] = 'Unknown'
             SORT_MINpDAY = False
         DICT['MINpDAY_GFS'] = 8.
         DICT['MINpDAY_GEFS'] = 10.
+        for keys in DICT.items():
+            if keys[0] not in MODEL_header:
+                MODEL_header.append(keys[0])
         MODEL_SUMMARY.append(DICT)
     
+    # after looping through files
     ARGS.MED_VAR = [*set(MED_VARS)]
     #make panda data frame for model summary
-    MODEL_header = []
-    for key, value in DICT.items():
-        MODEL_header.append(key)
     MODEL_df = pd.DataFrame(MODEL_SUMMARY, np.arange(len(files)) + 1, MODEL_header )
     
     # check to see if the SORTBY option is possible
     if ARGS.SORTBY not in MODEL_df.keys():
         print("WARNING: sort variable ", ARGS.SORTBY, " not found in header, will sort by PETs")
         ARGS.SORTBY = 'PETs'
+
     #print statistcs to screen and write to file
-    tt.print_summary(MODEL_df, ARGS)
+    tt.summary.write(MODEL_df, ARGS)
     
     # plot data
     if ARGS.PLOT or ARGS.PLOT_COMPONENTS:

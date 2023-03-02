@@ -17,3 +17,9 @@ FV-calc_layout.py
 CICE-calc_nprocs.py
     lists the total procs that can be used for a particular resolution
         only supported for 0.25 UFS grid
+
+if there are issues with the python modules
+    hera:       module use -a ~barton/TOOLS/modulefiles
+                module load conda
+    wcoss2:     module load python/3.8.6
+

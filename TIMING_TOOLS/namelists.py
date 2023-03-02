@@ -21,10 +21,22 @@ def read_nemsconfigure(dir_name):
         if 'omp_num_threads:' in line:
             DICT[line[0:3] + 'thr'] = int(line.split(':')[-1])
         if 'mesh_' in line:
-            C = line.split('mesh_')[-1][0:3].upper()
-            RES = line.strip()[-6:-3]
-            if RES[0] == '0':
-                RES= '0.' + RES.split('0')[-1]
+            C = line.split('mesh_')[1][0:3].upper()
+            if C == 'WAV':
+                WAV_RES_DICT = {
+                    'mesh.gwes_30m.nc' : '0.25TP',
+                    'mesh_tripolar.nc' : '0.25TPnew',
+                    'mesh_a.nc' : '0.25LLa',
+                    'mesh_b.nc' : '0.25LLb'
+                    }
+                try:
+                    RES = WAV_RES_DICT[line.split()[-1]]
+                except:
+                    RES = line.split()[-1].line.split('.nc')[0]
+            else:
+                RES = line.strip()[-6:-3]
+                if RES[0] == '0':
+                    RES= '0.' + RES.split('0')[-1]
             DICT[C + 'res'] = RES
         if '_petlist_bounds' in line:
             if line[0] != '+':
