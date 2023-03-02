@@ -100,7 +100,6 @@ def write(df, ARGS):
         SUM = 'SHARED \n'
     LOOP = HEAD_PRINT.copy()
     for H in LOOP:
-        print(df)
         if (df[H] == df[H][1]).all():
             TABS = ': \t'
             if len(H) < 5:
