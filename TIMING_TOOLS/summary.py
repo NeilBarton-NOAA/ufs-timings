@@ -64,7 +64,7 @@ def write(df, ARGS):
 
     # if showing loop
     if ARGS.SHOW_LOOP:
-        for C in COMPS_NOMED:
+        if C != 'MED':
             HEAD_PRINT.append(C+'loop')
 
     # if showing PEs
@@ -108,6 +108,7 @@ def write(df, ARGS):
                 TABS = ': \t\t'
             SUM = SUM + H + TABS + str(df[H][1]) + '\n'
             HEAD_PRINT.remove(H)
+    
     if PRINT_ATMIO:
         SUM = SUM + 'WARNING: ATMIOsec_max is close to or greater than ATMsec_max' + '\n'
 
