@@ -30,6 +30,7 @@ if __name__ == '__main__':
         DICT.update(tt.namelists.read_stdout(dir_name))
         DICT.update(tt.namelists.read_MOM_input(dir_name))
         DICT.update(tt.namelists.read_ice_in(dir_name))
+        DICT.update(tt.namelists.read_log_ww3(dir_name))
         DICT.update(tt.namelists.read_fv_core_netcdf(dir_name))
         DICT.update(tt.namelists.read_job_card(dir_name))
         

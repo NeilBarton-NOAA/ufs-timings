@@ -22,19 +22,7 @@ def read_nemsconfigure(dir_name):
             DICT[line[0:3] + 'thr'] = int(line.split(':')[-1])
         if 'mesh_' in line:
             C = line.split('mesh_')[1][0:3].upper()
-            if C == 'WAV':
-                WAV_RES_DICT = {
-                    'mesh_mx025gefs.nc' : '1/4-TP',
-                    'mesh.gwes_30m.nc' : 'NAWES',
-                    'mesh_tripolar.nc' : '1/4-TPnew',
-                    'mesh_a.nc' : '1/4-LLa',
-                    'mesh_b.nc' : '1/4-LLb'
-                    }
-                try:
-                    RES = WAV_RES_DICT[line.split()[-1]]
-                except:
-                    RES = line.split()[-1].split('.nc')[0]
-            else:
+            if C != 'WAV':
                 RES = line.strip()[-6:-3]
                 if RES[0] == '0':
                     RES= '0.' + RES.split('0')[-1]
@@ -177,5 +165,24 @@ def read_job_card(dir_name):
                 DICT['NODES'] = int(line.split('--nodes=')[-1])
             elif 'select=' in line: #pbs
                 DICT['NODES'] = int(line.split('select=')[-1].split(':')[0])
+    return DICT
+               
+def read_log_ww3(dir_name):
+    DICT = {}
+    config_file = dir_name + '/log.ww3'
+    if os.path.exists(config_file):
+        WAV_RES_DICT = {
+        'GLO 1/4 deg tripole grid lat 8'            : '1/4-T',
+        'Global 0.25 masked > 80 N'                 : '1/4-R80',
+        'Global 0.25 masked > 82.5 N'               : '1/4-R82.5',
+        'Global NAWES 30 min wave grid GWES v3.0.0' : '30min-NAWES' 
+        }
+        for line in open(config_file):
+            if 'Grid name ' in line:
+                try:
+                    DICT['WAVres'] = WAV_RES_DICT[line.split(':')[-1].strip()]
+                except:
+                    DICT['WAVres'] = line.split(':')[-1].strip()
+                break
     return DICT
 
