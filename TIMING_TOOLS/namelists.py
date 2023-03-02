@@ -24,15 +24,16 @@ def read_nemsconfigure(dir_name):
             C = line.split('mesh_')[1][0:3].upper()
             if C == 'WAV':
                 WAV_RES_DICT = {
-                    'mesh.gwes_30m.nc' : '0.25TP',
-                    'mesh_tripolar.nc' : '0.25TPnew',
-                    'mesh_a.nc' : '0.25LLa',
-                    'mesh_b.nc' : '0.25LLb'
+                    'mesh_mx025gefs.nc' : '1/4-TP',
+                    'mesh.gwes_30m.nc' : 'NAWES',
+                    'mesh_tripolar.nc' : '1/4-TPnew',
+                    'mesh_a.nc' : '1/4-LLa',
+                    'mesh_b.nc' : '1/4-LLb'
                     }
                 try:
                     RES = WAV_RES_DICT[line.split()[-1]]
                 except:
-                    RES = line.split()[-1].line.split('.nc')[0]
+                    RES = line.split()[-1].split('.nc')[0]
             else:
                 RES = line.strip()[-6:-3]
                 if RES[0] == '0':
