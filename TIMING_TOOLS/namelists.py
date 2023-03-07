@@ -173,9 +173,10 @@ def read_log_ww3(dir_name):
     if os.path.exists(config_file):
         WAV_RES_DICT = {
         'GLO 1/4 deg tripole grid lat 8'            : '1/4-T',
+        'Global NAWES 30 min wave grid'             : '30min-NAWES', 
+        'GLO 1/4 deg tripole'                       : '1/4-Tnew',
         'Global 0.25 masked > 80 N'                 : '1/4-R80',
-        'Global 0.25 masked > 82.5 N'               : '1/4-R82.5',
-        'Global NAWES 30 min wave grid GWES v3.0.0' : '30min-NAWES' 
+        'Global 0.25 masked > 82.5 N'               : '1/4-R82.5'
         }
         for line in open(config_file):
             if 'Grid name ' in line:

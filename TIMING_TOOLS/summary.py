@@ -12,7 +12,7 @@ def write(df, ARGS):
     # filter through what to print from MODEL_header
     FP = 'NODES' if 'NODES' in df.columns else 'PETs'
     
-    HEAD_PRINT = ['CONFIG', 'RESOLUTION', 'TAU', 'MINpDAY_GFS', 'MINpDAY_GEFS', 'MINpDAY', FP, 'FV3_32BIT']
+    HEAD_PRINT = ['CONFIG', 'TAU', 'MINpDAY_GFS', 'MINpDAY_GEFS', 'MINpDAY', FP, 'FV3_32BIT']
     if ARGS.SHOW_SEC:
         HEAD_PRINT.insert(HEAD_PRINT.index('MINpDAY')+1,'UFSsec_max')
     
@@ -23,6 +23,8 @@ def write(df, ARGS):
     HEAD_COMPS.remove('MED')
     REMOVE_HEAD_PRINT = []
     for C in HEAD_COMPS: 
+        if (C+'res' == df.columns).any():
+            HEAD_PRINT.append(C+'res')
         if (C+'mpi-t' == df.columns).any():
             HEAD_PRINT.append(C+'mpi-t')
         if (C+'dt' == df.columns).any():
