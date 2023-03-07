@@ -10,7 +10,7 @@ def write(df, ARGS):
     pd.options.display.colheader_justify = 'center'
     
     # filter through what to print from MODEL_header
-    FP = 'NODES' if 'NODES' in df.columns else 'PETs'
+    FP = 'NODES' if ('NODES' == df.columns).all() else 'PETs'
     
     HEAD_PRINT = ['CONFIG', 'TAU', 'MINpDAY_GFS', 'MINpDAY_GEFS', 'MINpDAY', FP, 'FV3_32BIT']
     if ARGS.SHOW_SEC:
@@ -122,7 +122,7 @@ def write(df, ARGS):
     df = df.sort_values('TAU')
     df = df.sort_values(ARGS.SORTBY)
     fw = 'esmf_summary.txt'
-    print('\n\n\n')
+    print('\n')
     print(SUM)
     if df.shape[0] > 1:
         print(df[HEAD_PRINT])
