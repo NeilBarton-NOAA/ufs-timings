@@ -25,7 +25,7 @@ class get:
                 print('./UFS-timing-tools.py -d $YOUR_DIRECTORY')
                 exit(1)
             else:
-                self.TOPDIR = os.environ['NPB_WORKDIR'] + '/RUNs/UFS'
+                self.TOPDIR = os.environ['NPB_WORKDIR'] + '/RUNS/UFS'
         else:
             self.TOPDIR = TOPDIR[0]
         self.SHOW_MED =  args.med
