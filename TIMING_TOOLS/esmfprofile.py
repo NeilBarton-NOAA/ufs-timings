@@ -73,8 +73,7 @@ def panda_addto_dict(df, DICT, MED_VAR):
         try:
             DICT[C+'mpi-t'] = str(DICT[C+'mpi']) + '-' + str(int(DICT[C+'thr']))
         except:
-            DICT[C+'thr'] = 1
-            DICT[C+'mpi-t'] = str(DICT[C+'mpi']) + '-' + str(DICT[C+'thr'])
+            DICT[C+'mpi-t'] = str(DICT[C+'mpi']) + '-na'
         if C == 'MED':
             DICT[C+'sec_mean'] = round(df[df['Region'] == C].sum()['Mean (s)'], 1)
             DICT[C+'sec_max'] = round(df[df['Region'] == C].sum()['Max (s)'], 1)
