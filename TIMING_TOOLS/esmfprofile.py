@@ -53,13 +53,16 @@ def panda_addto_dict(df, DICT, MED_VAR):
             if (df['Region'] == 'fv3_fcst').any():
                 DICT[C+'mpi'] = int(df['PETs'].where(df['Region'] == 'fv3_fcst').max())
                 DICT[C+'pe'] = int(df['PEs'].where(df['Region'] == 'fv3_fcst').max()) 
-                DICT['ATMIOmpi'] = int(df['PETs'].where(df['Region'] == 'wrtComp_01').max())
-                DICT['ATMIOpe'] = int(df['PEs'].where(df['Region'] == 'wrtComp_01').max())
-                DICT['ATMIOsec_mean'] = round(df['Mean (s)'].where(df['Region'] == 'wrtComp_01').sum(),1)
-                DICT['ATMIOsec_max'] = round(df['Max (s)'].where(df['Region'] == 'wrtComp_01').sum(),1)
-                DICT['ATMIO%'] = round(df['Max (s)'].where(df['Region'] == 'wrtComp_01').sum()/DICT['UFSsec_max']*100.,1)
-                DICT['ATMIO_MpD'] = round((df['Max (s)'].where(df['Region'] == 'wrtComp_01').sum()\
-                    /DICT['UFSsec_max'] / 60.0) / (DICT['TAU'] / 24.0),1)
+                try:
+                    DICT['ATMIOmpi'] = int(df['PETs'].where(df['Region'] == 'wrtComp_01').max())
+                    DICT['ATMIOpe'] = int(df['PEs'].where(df['Region'] == 'wrtComp_01').max())
+                    DICT['ATMIOsec_mean'] = round(df['Mean (s)'].where(df['Region'] == 'wrtComp_01').sum(),1)
+                    DICT['ATMIOsec_max'] = round(df['Max (s)'].where(df['Region'] == 'wrtComp_01').sum(),1)
+                    DICT['ATMIO%'] = round(df['Max (s)'].where(df['Region'] == 'wrtComp_01').sum()/DICT['UFSsec_max']*100.,1)
+                    DICT['ATMIO_MpD'] = round((df['Max (s)'].where(df['Region'] == 'wrtComp_01').sum()\
+                        /DICT['UFSsec_max'] / 60.0) / (DICT['TAU'] / 24.0),1)
+                except:
+                    pass
             elif (df['Region'] == 'datm').any():
                 DICT[C+'mpi'] = int(df['PETs'].where(df['Region'] == C).max())
                 DICT[C+'pe'] = int(df['PEs'].where(df['Region'] == C).max()) 
