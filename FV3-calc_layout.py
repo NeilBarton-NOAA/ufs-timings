@@ -47,8 +47,8 @@ for P in np.sort(np.unique(PROCS)):
     text = ''
     N_COM = XYS[PROCS == P].shape[0]
     if N_COM > 1:
-        N_COM = int(N_COM/2)
-    for i in np.arange(N_COM): 
+        N_COM = int(np.ceil(N_COM/2.)) #+ 1
+    for i in (np.arange(N_COM,0,-1) - 1): 
         text = text + '[' + str(XYS[PROCS == P][i][0]) + ',' + str(XYS[PROCS == P][i][1]) + ']'
     print(P*TILES,'\t', text)
 print('nprocs\t INPES JNPES options')
