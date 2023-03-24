@@ -28,6 +28,7 @@ if __name__ == '__main__':
         DICT.update(tt.namelists.read_nemsconfigure(dir_name))
         DICT.update(tt.namelists.read_model_configure(dir_name))
         DICT.update(tt.namelists.read_stdout(dir_name))
+        DICT.update(tt.namelists.read_field_table(dir_name))
         DICT.update(tt.namelists.read_MOM_input(dir_name))
         DICT.update(tt.namelists.read_ice_in(dir_name))
         DICT.update(tt.namelists.read_log_ww3(dir_name))

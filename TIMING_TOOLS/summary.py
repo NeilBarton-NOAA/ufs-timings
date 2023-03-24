@@ -29,6 +29,8 @@ def write(df, ARGS):
             HEAD_PRINT.append(C+'mpi-t')
         if (C+'dt' == df.columns).any():
             HEAD_PRINT.append(C+'dt')
+        if (C+'tracers_n' == df.columns).any():
+            HEAD_PRINT.append(C+'tracers_n')
         for SM in df['COMPS_SAMEPETS'][1]:
             if C not in SM:
                 HEAD_PRINT.append(C+'mpi-t')
@@ -118,7 +120,6 @@ def write(df, ARGS):
         HEAD_PRINT.append(ARGS.SORTBY)
 
     df = df.sort_values('CONFIG')
-    df = df.sort_values('RESOLUTION')
     df = df.sort_values('TAU')
     df = df.sort_values(ARGS.SORTBY)
     fw = 'esmf_summary.txt'

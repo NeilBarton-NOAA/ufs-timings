@@ -100,6 +100,19 @@ def read_stdout(dir_name):
     return DICT
 
 ####################################
+def read_field_table(dir_name):
+    import xarray as xr
+    import numpy as np
+    DICT = {}
+    config_file = dir_name + '/field_table' 
+    if os.path.exists(config_file):
+        N = 0
+        for line in open(config_file,'r'):
+            if line.split()[0] == '"TRACER",':
+                N += 1
+        DICT['ATMtracers_n'] = N
+    return DICT
+####################################
 def read_fv_core_netcdf(dir_name):
     import xarray as xr
     import numpy as np
@@ -135,8 +148,11 @@ def read_MOM_input(dir_name):
             RES = '0.25'
         elif I == 360 and J == 320:
             RES = '1.00'
+        elif I == 72 and J == 35:
+            RES = '5.0'
         else:
             print('FATAL: OCNres unknown from I and J: I =', I, ' J =', J)
+            exit(1)
         DICT['OCNres'] = RES + L
     config_file = dir_name + '/INPUT/MOM_layout'
     if os.path.exists(config_file):
