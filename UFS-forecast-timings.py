@@ -50,6 +50,7 @@ if __name__ == '__main__':
         else:
             DICT['MINpDAY'] = 'Unknown'
             SORT_MINpDAY = False
+        DICT['WALLTIMEsec'] = round(DICT['WALLTIMEsec'])
         DICT['MINpDAY_GFS'] = 8.
         DICT['MINpDAY_GEFS'] = 10.
         for keys in DICT.items():

@@ -33,6 +33,7 @@ def getfiles(TOPDIR):
 def panda_addto_dict(df, DICT, MED_VAR):
     DICT['PETs'] = int(df['PETs'].max()) 
     DICT['UFSsec_max'] = int(df['Max (s)'].max()) 
+    DICT['UFS_MpD'] = round( (df['Max (s)'].max() / 60.0) / (DICT['TAU'] / 24.0), 1)
     DICT['INITsec_max'] = round(df['Max (s)'].loc[(df['Region'] == 'UFS Driver Grid Comp') & (df['Phase'] == 'Init 1')].values[0],1)
     DICT['INIT%'] = round(df['Max (s)'].loc[(df['Region'] == 'UFS Driver Grid Comp') & (df['Phase'] == 'Init 1')].values[0] / DICT['UFSsec_max']*100.,1)
     DICT['INIT_MpD'] = round((df['Max (s)'].loc[(df['Region'] == 'UFS Driver Grid Comp') & (df['Phase'] == 'Init 1')].values[0]\
@@ -69,7 +70,8 @@ def panda_addto_dict(df, DICT, MED_VAR):
         else:
             DICT[C+'mpi'] = int(df['PETs'].where(df['Region'] == C).max())
             DICT[C+'pe'] = int(df['PEs'].where(df['Region'] == C).max()) 
-        LOOP = df[df['Region'] == C ]['Count'].max()
+        LOOP = df[df['Region'] == C]['Count'].max()
+        DICT[C+'cplsec'] = int((DICT['TAU'] * 3600.0) / LOOP) 
         try:
             DICT[C+'mpi-t'] = str(DICT[C+'mpi']) + '-' + str(int(DICT[C+'thr']))
         except:
@@ -82,8 +84,6 @@ def panda_addto_dict(df, DICT, MED_VAR):
             DICT[C+'_MpD'] = round((df[df['Region'] == C].sum()['Max (s)']\
                 / 60) / (DICT['TAU'] / 24.), 1)
         else:
-            LOOP_ALL.append(LOOP) 
-            DICT[C+'loop'] = LOOP
             if C == 'ATM':
                 DICT[C+'sec_mean'] = round(df[df['Region'] == 'fv3_fcst'].loc[df['Count'] == LOOP].sum()['Mean (s)'],1)
                 DICT[C+'sec_max'] = round(df[df['Region'] == 'fv3_fcst']\

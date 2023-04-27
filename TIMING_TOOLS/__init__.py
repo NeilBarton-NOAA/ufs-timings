@@ -34,23 +34,17 @@ def parse_same_pets(DICT):
     COMPS = DICT['COMPS']
     COMPS_NOMED = COMPS.copy()
     COMPS_NOMED.remove('MED')
-    LOOP_ALL = []
-    for C in COMPS_NOMED:
-        LOOP_ALL.append(DICT[C+'loop'])
     PET_DATA = np.zeros([len(COMPS_NOMED),2]) - 9999
     for k, C in enumerate(COMPS_NOMED):
         PET_DATA[k,0] = DICT[C+'pet_beg']
         PET_DATA[k,1] = DICT[C+'pet_end']
-        DICT[C+'loop'] = 'Slow' if DICT[C+'loop'] == min(LOOP_ALL) else 'Fast'
-    DICT['MEDloop'] = 'MED'
     # summarize variables when compoents on same PETS
     index = np.where(np.diff(PET_DATA[:,0]) == 0)[0]
     DICT['COMPS_SAMEPETS'] = []
     for k in index:
         C0 = COMPS_NOMED[k]
         C1 = COMPS_NOMED[k+1]
-        C_NAME = C0 + "+" + C1 
-        DICT[C_NAME+'loop'] = DICT[C+'loop']
+        C_NAME = C0 + "+" + C1
         DICT[C_NAME+'pet_beg'] = min(DICT[C0+'pet_beg'], DICT[C1+'pet_beg'])
         DICT[C_NAME+'pet_end'] = min(DICT[C0+'pet_end'], DICT[C1+'pet_end'])
         DICT[C_NAME+'mpi'] = max(DICT[C0+'mpi'], DICT[C1+'mpi'])

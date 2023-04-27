@@ -3,6 +3,7 @@ __all__ = ['write']
 ########################
 def write(df, ARGS):
     import pandas as pd
+    import numpy as np
     # create pandas from summaries
     pd.options.display.max_rows = None
     pd.options.display.max_columns = 99
@@ -10,18 +11,18 @@ def write(df, ARGS):
     pd.options.display.colheader_justify = 'center'
     
     # filter through what to print from MODEL_header
-    FP = 'NODES' if ('NODES' == df.columns).all() else 'PETs'
+    FP = 'PETs' if (np.isnan(df['NODES']).any()) else 'NODES'
     
     HEAD_PRINT = ['CONFIG', 'TAU', 'MINpDAY_GFS', 'MINpDAY_GEFS', 'MINpDAY', FP, 'FV3_32BIT']
     if ARGS.SHOW_SEC:
         HEAD_PRINT.insert(HEAD_PRINT.index('MINpDAY')+1,'UFSsec_max')
+        HEAD_PRINT.insert(HEAD_PRINT.index('MINpDAY')+1,'WALLTIMEsec')
     
     for H in HEAD_PRINT:
         if H not in df.columns:
             HEAD_PRINT.remove(H)
     HEAD_COMPS = df['COMPS'].loc[df['COMPS'].str.len().max() == df['COMPS'].str.len()].values[0]
     HEAD_COMPS.remove('MED')
-    REMOVE_HEAD_PRINT = []
     for C in HEAD_COMPS: 
         if (C+'res' == df.columns).any():
             HEAD_PRINT.append(C+'res')
@@ -31,9 +32,9 @@ def write(df, ARGS):
             HEAD_PRINT.append(C+'dt')
         if (C+'tracers_n' == df.columns).any():
             HEAD_PRINT.append(C+'tracers_n')
-        for SM in df['COMPS_SAMEPETS'][1]:
-            if C not in SM:
-                HEAD_PRINT.append(C+'mpi-t')
+        #for SM in df['COMPS_SAMEPETS'][1]:
+        #    if C not in SM:
+        #        HEAD_PRINT.append(C+'mpi-t')
         if C == 'ATM' and 'ATMIOmpi' in df.columns:
             HEAD_PRINT.append('ATMIOmpi')
     
@@ -47,11 +48,6 @@ def write(df, ARGS):
     for C in HEAD_COMPS: 
         if C+TS in df.columns:
             HEAD_PRINT.append(C+TS)
-
-    # remove items that share PEs
-    for C in REMOVE_HEAD_PRINT:
-        HEAD_PRINT.remove(C+'mpi-t')
-        HEAD_PRINT.remove(C+TS)
     
     # if showing ATMIO stats
     PRINT_ATMIO = False
@@ -67,9 +63,10 @@ def write(df, ARGS):
             HEAD_PRINT.append('ATMiolayout')
 
     # if showing loop
-    if ARGS.SHOW_LOOP:
-        if C != 'MED':
-            HEAD_PRINT.append(C+'loop')
+    if ARGS.SHOW_CPLSEC:
+        for C in HEAD_COMPS:
+            if C != 'MED':
+                HEAD_PRINT.append(C+'cplsec')
 
     # if showing PEs
     if ARGS.SHOW_PES:
@@ -81,6 +78,8 @@ def write(df, ARGS):
 
     # if showing MEDIATOR variables
     if ARGS.SHOW_MED:
+        if 'UFS'+TS not in HEAD_PRINT:
+            HEAD_PRINT.insert(HEAD_PRINT.index('MINpDAY')+1,'UFS'+TS)
         HEAD_PRINT.append('MEDmpi-t')
         HEAD_PRINT.append('INIT'+TS)
         HEAD_PRINT.append('FINAL'+TS)
