@@ -23,8 +23,10 @@ def write(df, ARGS):
             HEAD_PRINT.remove(H)
     HEAD_COMPS = df['COMPS'].loc[df['COMPS'].str.len().max() == df['COMPS'].str.len()].values[0]
     HEAD_COMPS.remove('MED')
+    SHARED_COMPS = []
     for SM in df['COMPS_SAMEPETS'][1]:
-        SHARED_COMPS = SM.split('+')
+        for S in SM.split('+'):
+            SHARED_COMPS.append(S)
         HEAD_COMPS.insert(HEAD_COMPS.index(SHARED_COMPS[1]) + 1, SM)
  
     for C in HEAD_COMPS: 
