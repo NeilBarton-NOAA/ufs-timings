@@ -43,6 +43,7 @@ if __name__ == '__main__':
         DICT = tt.esmfprofile.panda_addto_dict(ESMF_df, DICT, MED_VAR)
         DICT = tt.parse_same_pets(DICT)
         DICT = tt.nameruns(DICT)
+        DICT = tt.procs_not_used(DICT)
         
         # calc minute per day for forecast: goal is 8 minutes per day
         if 'WALLTIMEsec' in DICT.keys() and 'TAU' in DICT.keys():

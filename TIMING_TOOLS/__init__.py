@@ -56,3 +56,21 @@ def parse_same_pets(DICT):
         DICT['COMPS_SAMEPETS'].append(C_NAME)
     return DICT
 
+####################################
+def procs_not_used(DICT):
+    COMPS = DICT['COMPS']
+    COMPS_PROCS = COMPS.copy()
+    COMPS_PROCS.remove('MED')
+    if 'CHM' in COMPS:
+        COMPS_PROCS.remove('CHM')
+    COMPS_PROCS.append('ATMIO')
+    TP = 0
+    for k, C in enumerate(COMPS_PROCS):
+        try:
+            thr = DICT[C+'thr']
+        except:
+            thr = 1
+        TP = TP + (DICT[C+'mpi'] * thr)
+    DICT['UNUSED_PROCS'] = DICT['PETs'] - TP
+    return DICT
+

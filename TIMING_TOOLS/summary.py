@@ -23,18 +23,19 @@ def write(df, ARGS):
             HEAD_PRINT.remove(H)
     HEAD_COMPS = df['COMPS'].loc[df['COMPS'].str.len().max() == df['COMPS'].str.len()].values[0]
     HEAD_COMPS.remove('MED')
+    for SM in df['COMPS_SAMEPETS'][1]:
+        SHARED_COMPS = SM.split('+')
+        HEAD_COMPS.insert(HEAD_COMPS.index(SHARED_COMPS[1]) + 1, SM)
+ 
     for C in HEAD_COMPS: 
         if (C+'res' == df.columns).any():
             HEAD_PRINT.append(C+'res')
-        if (C+'mpi-t' == df.columns).any():
+        if (C+'mpi-t' == df.columns).any() and C not in SHARED_COMPS:
             HEAD_PRINT.append(C+'mpi-t')
         if (C+'dt' == df.columns).any():
             HEAD_PRINT.append(C+'dt')
         if (C+'tracers_n' == df.columns).any():
             HEAD_PRINT.append(C+'tracers_n')
-        #for SM in df['COMPS_SAMEPETS'][1]:
-        #    if C not in SM:
-        #        HEAD_PRINT.append(C+'mpi-t')
         if C == 'ATM' and 'ATMIOmpi' in df.columns:
             HEAD_PRINT.append('ATMIOmpi')
     
@@ -65,7 +66,7 @@ def write(df, ARGS):
     # if showing loop
     if ARGS.SHOW_CPLSEC:
         for C in HEAD_COMPS:
-            if C != 'MED':
+            if C != 'MED' and '+' not in C:
                 HEAD_PRINT.append(C+'cplsec')
 
     # if showing PEs
@@ -89,14 +90,15 @@ def write(df, ARGS):
     # if shoing xy FV3 layout
     if ARGS.SHOW_XYLAYOUT:
         try:
-            HEAD_PRINT.insert(HEAD_PRINT.index('ATMmpi-t')+1,'ATMlayout')
+            HEAD_PRINT.insert(HEAD_PRINT.index('ATMmpi-t'),'ATMlayout')
         except:
-            HEAD_PRINT.insert(HEAD_PRINT.index('ATM+CHMmpi-t')+1,'ATMlayout')
+            HEAD_PRINT.insert(HEAD_PRINT.index('ATM+CHMmpi-t'),'ATMlayout')
     
     if 'RESTART_N' in df.columns:
         if (df['RESTART_N'] != df['TAU']).all():
             HEAD_PRINT.append('RESTART_N')
     
+    HEAD_PRINT.append('UNUSED_PROCS')
     # remove items that are the same 
     SUM = ''
     if df.shape[0] > 1:
