@@ -87,12 +87,12 @@ def panda_addto_dict(df, DICT, MED_VAR):
             if C == 'ATM':
                 DICT[C+'sec_mean'] = round(df[df['Region'] == 'fv3_fcst'].loc[df['Count'] == LOOP].sum()['Mean (s)'],1)
                 DICT[C+'sec_max'] = round(df[df['Region'] == 'fv3_fcst']\
-                    .loc[(df['Count'] == LOOP) & (df['Phase'] == 'RunPhase1')].sum()['Max (s)'],1)
+                    .loc[(df['Count'] == LOOP)].sum()['Max (s)'],1)
                 DICT[C+'%'] = round(df[df['Region'] == 'fv3_fcst']\
-                    .loc[(df['Count'] == LOOP) & (df['Phase'] == 'RunPhase1')].sum()['Max (s)']\
+                    .loc[(df['Count'] == LOOP)].sum()['Max (s)']\
                     /DICT['UFSsec_max']*100.,1)
                 DICT[C+'_MpD'] = round((df[df['Region'] == 'fv3_fcst']\
-                    .loc[(df['Count'] == LOOP) & (df['Phase'] == 'RunPhase1')].sum()['Max (s)']\
+                    .loc[(df['Count'] == LOOP)].sum()['Max (s)']\
                     /60.) / (DICT['TAU'] / 24.),1)
             else:
                 DICT[C+'sec_mean'] = round(df[df['Region'] == C]\
