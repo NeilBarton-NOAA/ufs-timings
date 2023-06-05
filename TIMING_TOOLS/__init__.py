@@ -70,7 +70,11 @@ def procs_not_used(DICT):
             thr = DICT[C+'thr']
         except:
             thr = 1
-        TP = TP + (DICT[C+'mpi'] * thr)
+        try:
+            mpi = DICT[C+'mpi']
+        except:
+            mpi = 0
+        TP = TP + (mpi * thr)
     DICT['UNUSED_PROCS'] = DICT['PETs'] - TP
     return DICT
 
