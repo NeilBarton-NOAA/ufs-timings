@@ -55,14 +55,16 @@ def write(df, ARGS):
     # if showing ATMIO stats
     PRINT_ATMIO = False
     if ARGS.SHOW_IO:
-        HEAD_PRINT.insert(HEAD_PRINT.index('ATM'+TS) + 1,'ATMIO'+TS)
+        if 'ATMIO'+TS in df.columns:
+            HEAD_PRINT.insert(HEAD_PRINT.index('ATM'+TS) + 1,'ATMIO'+TS)
         HEAD_PRINT.append('ATMiolayout')
         if 'OCNiolayout' in df.columns:
             HEAD_PRINT.append('OCNiolayout')
     elif 'ATMiosec_max' in df.columns:
         if  (( (df['ATMsec_max'] - df['ATMIOsec_max']) / df['ATMsec_max'] * 100.0 ) < 10.).any():
             PRINT_ATMIO = True
-            HEAD_PRINT.insert(HEAD_PRINT.index('ATM'+TS) + 1,'ATMIO'+TS)
+            if 'ATMIO'+TS in df.columns:
+                HEAD_PRINT.insert(HEAD_PRINT.index('ATM'+TS) + 1,'ATMIO'+TS)
             HEAD_PRINT.append('ATMiolayout')
 
     # if showing loop
