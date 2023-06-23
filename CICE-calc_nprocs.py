@@ -32,13 +32,14 @@ SHAPE = int(args.shape[0])
 
 ####################################
 GLOB={ 
-"0.25" : {"NXGLOB" : 1440, "NYGLOB" : 1080},
+0.25 : {"NXGLOB" : 1440, "NYGLOB" : 1080},
+1.00 : {"NXGLOB" : 360, "NYGLOB" : 320},
 }
 
-if RES not in GLOB.keys():
+if float(RES) not in GLOB.keys():
 	print 'resolution does not match known keys:'
 	print ' given resolution:'
-	print '  ', RES
+	print '  ', float(RES)
 	print ' known resolutions:'
 	for k in GLOB.keys():
 		print '  ', k
@@ -49,14 +50,14 @@ def factors(n):
 	return sorted(reduce(list.__add__,([i, n//i] for i in range(1, int(n**0.5) + 1) if n % i == 0)))
 
 ############################################################
-NTASKS = factors(GLOB[RES]['NXGLOB']) 
-NXGLOB=GLOB[RES]['NXGLOB']
-NYGLOB=GLOB[RES]['NYGLOB']
+NTASKS = factors(GLOB[float(RES)]['NXGLOB']) 
+NXGLOB=GLOB[float(RES)]['NXGLOB']
+NYGLOB=GLOB[float(RES)]['NYGLOB']
 BPX = 1			# number of blocks per processor in x direction (1 for straight MPI)
 BPY = 1 		# number of blocks per processor in y direction (1 for straight MPI)
 MXBLCKS = BPX * BPY
 
-print "resolution: \t " + RES + " " + str(NXGLOB) + "x" + str(NYGLOB) + " (NXGLOB x NYGLOB)"
+print "resolution: \t " + str(RES) + " " + str(NXGLOB) + "x" + str(NYGLOB) + " (NXGLOB x NYGLOB)"
 print "processor shape: slenderX"+str(SHAPE)
 print 'nprocs\tBLCKX\tBLCKY\tMXBLCKS'
 for N in NTASKS:

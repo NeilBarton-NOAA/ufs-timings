@@ -48,6 +48,7 @@ if __name__ == '__main__':
         # calc minute per day for forecast: goal is 8 minutes per day
         if 'WALLTIMEsec' in DICT.keys() and 'TAU' in DICT.keys():
             DICT['MINpDAY'] = round((DICT['WALLTIMEsec'] / 60.0) / (DICT['TAU'] / 24.0),1) 
+            DICT['COREHOURSpDAY'] = round((DICT['PETs'] * DICT['WALLTIMEsec'] / 3600.0) / (DICT['TAU'] / 24.0),1)
         else:
             DICT['MINpDAY'] = 'Unknown'
             SORT_MINpDAY = False

@@ -16,10 +16,12 @@ import numpy as np
 # parse agruments
 parser = argparse.ArgumentParser(description="description: calculates the FV3 INPES JNPES options for a resolution")
 parser.add_argument('RES', metavar = 'resolution', action = 'store', \
-					nargs='?', default=["C384"], \
+					nargs = '?', default="C384", \
 					help="Resolution of the FV3 model. examples include: C384")
 args = parser.parse_args()
-RES = args.RES[0]
+RES = args.RES
+print(RES)
+print(type(RES))
 TILES = 6
 ####################################
 #TILES=6

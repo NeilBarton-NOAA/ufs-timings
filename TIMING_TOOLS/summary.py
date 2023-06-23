@@ -4,6 +4,7 @@ __all__ = ['write']
 def write(df, ARGS):
     import pandas as pd
     import numpy as np
+    from prettytable import PrettyTable as pt
     # create pandas from summaries
     pd.options.display.max_rows = None
     pd.options.display.max_columns = 99
@@ -103,23 +104,21 @@ def write(df, ARGS):
             HEAD_PRINT.append('RESTART_N')
     
     HEAD_PRINT.append('UNUSED_PROCS')
+    HEAD_PRINT.append('COREHOURSpDAY')
     # remove items that are the same 
-    SUM = ''
     if df.shape[0] > 1:
-        SUM = 'SHARED \n'
+        SUM = pt(['SHARED:', ' '], border = False, padding_width = 2)
+    else:
+        SUM = pt(['INFO:', ''], border = False, padding_width = 2)
+    SUM.align = 'l'
     LOOP = HEAD_PRINT.copy()
     for H in LOOP:
         if (df[H] == df[H][1]).all():
-            TABS = ': \t'
-            if len(H) < 5:
-                TABS = ': \t\t'
-            elif len(H) < 6:
-                TABS = ': \t\t'
-            SUM = SUM + H + TABS + str(df[H][1]) + '\n'
+            SUM.add_row([H+':', str(df[H][1])])
             HEAD_PRINT.remove(H)
     
     if PRINT_ATMIO:
-        SUM = SUM + 'WARNING: ATMIOsec_max is close to or greater than ATMsec_max' + '\n'
+        SUM.add(['WARNING:', 'ATMIOsec_max is close to or greater than ATMsec_max'])
 
     if ARGS.SORTBY not in HEAD_PRINT:
         HEAD_PRINT.append(ARGS.SORTBY)
@@ -130,13 +129,14 @@ def write(df, ARGS):
     fw = 'esmf_summary.txt'
     print('\n')
     print(SUM)
+    print('\n')
     if df.shape[0] > 1:
         print(df[HEAD_PRINT])
         df[HEAD_PRINT].to_string(fw) 
     f = open(fw,'a')
     f.write('\n\n')
-    f.write(SUM)
-    f.write('\n') 
+    f.write(SUM.get_string())
+    f.write('\n\n') 
     for i in range(df.shape[0]):
         f.write(str(i+1) + ' ' + df['NAME'][i+1] + '\n')
     f.close()

@@ -3,12 +3,14 @@ import args, esmfprofile, namelists, plot, summary
 ####################################
 def nameruns(DICT):
     COMPS = DICT['COMPS']
-    if 'ATM' and 'OCN' and 'ICE' and 'WAV' and 'CHM' in COMPS:
+    if ('ATM' in COMPS) and ('OCN' in COMPS) and ('ICE' in COMPS) and ('WAV' in COMPS) and ('CHM' in COMPS):
         DICT['CONFIG'] = 'S2SWA'
     elif ('ATM' in COMPS) and ('OCN' in COMPS) and ('ICE' in COMPS) and ('WAV' in COMPS) and ('CHM' not in COMPS):
         DICT['CONFIG'] = 'S2SW'
     elif ('ATM' in COMPS) and ('OCN' in COMPS) and ('ICE' in COMPS) and ('WAV' not in COMPS) and ('CHM' not in COMPS):
         DICT['CONFIG'] = 'S2S'
+    elif ('ATM' in COMPS) and ('OCN' in COMPS) and ('ICE' in COMPS) and ('WAV' not in COMPS) and ('CHM' in COMPS):
+        DICT['CONFIG'] = 'SFS'
     elif ('ATM' in COMPS) and ('OCN' and 'ICE' and 'WAV' and 'CHM' not in COMPS):
         DICT['CONFIG'] = 'ATM'
     else:
@@ -67,13 +69,15 @@ def procs_not_used(DICT):
     TP = 0
     for k, C in enumerate(COMPS_PROCS):
         try:
-            thr = DICT[C+'thr']
-        except:
-            thr = 1
-        try:
             mpi = DICT[C+'mpi']
         except:
             mpi = 0
+        if C == 'ATMIO':
+            C = 'ATM'
+        try:
+            thr = DICT[C+'thr']
+        except:
+            thr = 1
         TP = TP + (mpi * thr)
     DICT['UNUSED_PROCS'] = DICT['PETs'] - TP
     return DICT
