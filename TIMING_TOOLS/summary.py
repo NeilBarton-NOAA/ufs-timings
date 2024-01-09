@@ -12,7 +12,10 @@ def write(df, ARGS):
     pd.options.display.colheader_justify = 'center'
     
     # filter through what to print from MODEL_header
-    FP = 'PETs' if (np.isnan(df['NODES']).any()) else 'NODES'
+    FP = 'PETs' 
+    if 'NODES' in df.columns:
+        if (np.isnan(df['NODES']).any() == False):
+            FP = 'NODES'
     
     HEAD_PRINT = ['CONFIG', 'TAU', 'MINpDAY_GFS', 'MINpDAY_GEFS', 'MINpDAY', FP, 'FV3_32BIT']
     if ARGS.SHOW_SEC:
@@ -144,8 +147,18 @@ def write(df, ARGS):
     df_sum.to_string('temp1.txt', index=False, header=False)
     if df.shape[0] > 1:
         df[HEAD_PRINT].to_string('temp2.txt') 
+        write_files = ['temp1.txt', 'temp2.txt']
+        with open(fw,'a') as outfile:
+            for f in ['temp1.txt', 'temp2.txt']:
+                with open(f) as infile:
+                    outfile.write('\n')
+                    outfile.write(infile.read())
+                    outfile.write('\n')
+                os.remove(f)
+    else:
+        write_files = ['temp1.txt']
     with open(fw,'a') as outfile:
-        for f in ['temp1.txt', 'temp2.txt']:
+        for f in write_files:
             with open(f) as infile:
                 outfile.write('\n')
                 outfile.write(infile.read())
