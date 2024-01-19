@@ -12,6 +12,8 @@ def read_nemsconfigure(dir_name):
     DICT = {}
     config_file = dir_name + '/nems.configure'
     if not os.path.exists(config_file):
+        config_file = dir_name + '/ufs.configure'
+    if not os.path.exists(config_file):
         config_file = dir_name + '/gfsfcst.log'
     L = []
     for line in open(config_file): 
