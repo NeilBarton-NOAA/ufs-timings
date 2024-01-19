@@ -12,8 +12,12 @@ def write(df, ARGS):
     pd.options.display.colheader_justify = 'center'
     
     # filter through what to print from MODEL_header
-    FP = 'PETs' if (np.isnan(df['NODES']).any()) else 'NODES'
-    
+    FP = 'NODES'
+    if 'NODES' not in df.columns:
+        FP = 'PETS'
+    elif np.isnan(df['NODES']).any():
+        FP = 'PETS'
+     
     HEAD_PRINT = ['CONFIG', 'TAU', 'MINpDAY_GFS', 'MINpDAY_GEFS', 'MINpDAY', FP, 'FV3_32BIT']
     if ARGS.SHOW_SEC:
         HEAD_PRINT.insert(HEAD_PRINT.index('MINpDAY')+1,'UFSsec_max')
@@ -67,7 +71,11 @@ def write(df, ARGS):
             if 'ATMIO'+TS in df.columns:
                 HEAD_PRINT.insert(HEAD_PRINT.index('ATM'+TS) + 1,'ATMIO'+TS)
             HEAD_PRINT.append('ATMiolayout')
-
+ 
+    if ARGS.SHOW_ADVANCE_PROCS:
+        HEAD_PRINT.append('UNUSED_PROCS')
+        HEAD_PRINT.append('COREHOURSpDAY')
+    
     # if showing loop
     if ARGS.SHOW_CPLSEC:
         for C in HEAD_COMPS:
@@ -103,8 +111,6 @@ def write(df, ARGS):
         if (df['RESTART_N'] != df['TAU']).all():
             HEAD_PRINT.append('RESTART_N')
     
-    HEAD_PRINT.append('UNUSED_PROCS')
-    HEAD_PRINT.append('COREHOURSpDAY')
     # remove items that are the same 
     SUM = []
     if df.shape[0] > 1:
@@ -142,14 +148,17 @@ def write(df, ARGS):
         f.write(str(i+1) + ' ' + df['NAME'][i+1] + '\n')
     f.close()
     df_sum.to_string('temp1.txt', index=False, header=False)
+    
     if df.shape[0] > 1:
         df[HEAD_PRINT].to_string('temp2.txt') 
-    with open(fw,'a') as outfile:
-        for f in ['temp1.txt', 'temp2.txt']:
-            with open(f) as infile:
-                outfile.write('\n')
-                outfile.write(infile.read())
-                outfile.write('\n')
-            os.remove(f)
+        with open(fw,'a') as outfile:
+            for f in ['temp1.txt', 'temp2.txt']:
+                with open(f) as infile:
+                    outfile.write('\n')
+                    outfile.write(infile.read())
+                    outfile.write('\n')
+                os.remove(f)
+    else:
+        os.remove('temp1.txt')
    
 
