@@ -13,6 +13,7 @@ class get:
     parser.add_argument('-c', '--cplsec', action='store_true', help='show coupling seconds for component')
     parser.add_argument('-pe', '--pes', action='store_true', help='show PEs for components')
     parser.add_argument('-xy', '--xylayout', action='store_false', help='do not show X,Y mpi layout for FV3')
+    parser.add_argument('-ap', '--advanceprocs', action='store_true', help='show unused procs and core hours per forecast day')
     parser.add_argument('-p', '--plot', action='store_true', default=None, help='plot Secs for total model')
     parser.add_argument('-pc', '--plot_components', action='store_true', default=None, help='plot Secs for components')
     ####################################
@@ -39,6 +40,7 @@ class get:
         self.SHOW_CPLSEC = args.cplsec
         self.SHOW_PES = args.pes
         self.SORTBY = args.sortby[0]
+        self.SHOW_ADVANCE_PROCS = args.advanceprocs
         if args.plot is not None:
             self.PLOT = True
         else:
