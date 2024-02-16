@@ -148,13 +148,6 @@ def write(df, ARGS):
     if df.shape[0] > 1:
         df[HEAD_PRINT].to_string('temp2.txt') 
         write_files = ['temp1.txt', 'temp2.txt']
-        with open(fw,'a') as outfile:
-            for f in ['temp1.txt', 'temp2.txt']:
-                with open(f) as infile:
-                    outfile.write('\n')
-                    outfile.write(infile.read())
-                    outfile.write('\n')
-                os.remove(f)
     else:
         write_files = ['temp1.txt']
     with open(fw,'a') as outfile:

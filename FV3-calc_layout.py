@@ -3,8 +3,8 @@
 #
 # Calculate FV3 x,y layout options for 
 #	agruments:
-#		resolution:					resolution of model, examples
-#										384
+#		resolution: resolution of model, examples
+#						384
 #
 ########################################################################
 import argparse
@@ -32,7 +32,7 @@ def factors(n):
 	return sorted(reduce(list.__add__,([i, n//i] for i in range(1, int(n**0.5) + 1) if n % i == 0)))
 X, Y = [], []
 for i in factors(n):
-    if (384/i) >= 4:
+    if (n/i) >= 4:
         X.append(i)
         Y.append(i)
 PROCS = []
