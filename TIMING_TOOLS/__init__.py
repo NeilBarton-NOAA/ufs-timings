@@ -55,6 +55,8 @@ def parse_same_pets(DICT):
         DICT[C_NAME+'mpi-t'] = str(DICT[C_NAME+'mpi']) + '-' + str(DICT[C0+'thr']) 
         DICT[C_NAME+'sec_mean'] = DICT[C0+'sec_mean'] + DICT[C1+'sec_mean']
         DICT[C_NAME+'sec_max'] = DICT[C0+'sec_max'] + DICT[C1+'sec_max']
+        DICT[C_NAME+'%'] = round(DICT[C_NAME+'sec_max'] / DICT['UFSsec_max']*100., 1)
+        DICT[C_NAME+'_MpD'] = round((DICT[C_NAME+'sec_max'] / 60.0) / (float(DICT['TAU']) / 24), 1)
         DICT['COMPS_SAMEPETS'].append(C_NAME)
     return DICT
 

@@ -30,10 +30,11 @@ def write(df, ARGS):
     HEAD_COMPS.remove('MED')
     SHARED_COMPS = []
     for SM in df['COMPS_SAMEPETS'][1]:
+        print(SM)
         for S in SM.split('+'):
             SHARED_COMPS.append(S)
         HEAD_COMPS.insert(HEAD_COMPS.index(SHARED_COMPS[1]) + 1, SM)
- 
+    
     for C in HEAD_COMPS: 
         if (C+'res' == df.columns).any():
             HEAD_PRINT.append(C+'res')
@@ -53,6 +54,9 @@ def write(df, ARGS):
     if ARGS.SHOW_PERCENT:
         TS = '%' 
   
+    for SM in df['COMPS_SAMEPETS'][1]:
+        HEAD_PRINT.append(SM+TS)
+    
     for C in HEAD_COMPS: 
         if C+TS in df.columns:
             HEAD_PRINT.append(C+TS)
@@ -100,7 +104,7 @@ def write(df, ARGS):
         for M in ARGS.MED_VAR:
             HEAD_PRINT.append(M+TS)
     
-    # if shoing xy FV3 layout
+    # if showing xy FV3 layout
     if ARGS.SHOW_XYLAYOUT:
         try:
             HEAD_PRINT.insert(HEAD_PRINT.index('ATMmpi-t'),'ATMlayout')
