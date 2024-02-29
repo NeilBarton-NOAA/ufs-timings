@@ -17,15 +17,8 @@ def write(df, ARGS):
         FP = 'PETS'
     elif np.isnan(df['NODES']).any():
         FP = 'PETS'
-     
-    HEAD_PRINT = ['CONFIG', 'TAU', 'MINpDAY_GFS', 'MINpDAY_GEFS', 'MINpDAY', FP, 'FV3_32BIT']
-    if ARGS.SHOW_SEC:
-        HEAD_PRINT.insert(HEAD_PRINT.index('MINpDAY')+1,'UFSsec_max')
-        HEAD_PRINT.insert(HEAD_PRINT.index('MINpDAY')+1,'WALLTIMEsec')
     
-    for H in HEAD_PRINT:
-        if H not in df.columns:
-            HEAD_PRINT.remove(H)
+    # list components
     HEAD_COMPS = df['COMPS'].loc[df['COMPS'].str.len().max() == df['COMPS'].str.len()].values[0]
     HEAD_COMPS.remove('MED')
     SHARED_COMPS = []
@@ -34,16 +27,30 @@ def write(df, ARGS):
         for S in SM.split('+'):
             SHARED_COMPS.append(S)
         HEAD_COMPS.insert(HEAD_COMPS.index(SHARED_COMPS[1]) + 1, SM)
+     
+    HEAD_PRINT = ['CONFIG']
+    
+    # Resolution
+    ADDS = ['res', 'dt', 'trancers_n']
+    for A in ADDS: 
+        for C in HEAD_COMPS: 
+            if ((C+A == df.columns).any()) and (C != 'CHM') and (C != 'ICE'):
+                HEAD_PRINT.append(C+A)
+    
+    HEAD_PRINT.extend(['FV3_32BIT', 'MINpDAY_GFS', 'MINpDAY_GEFS', 'MINpDAY', FP, 'TAU'])
+    
+    if ARGS.SHOW_SEC:
+        HEAD_PRINT.insert(HEAD_PRINT.index('MINpDAY')+1,'UFSsec_max')
+        HEAD_PRINT.insert(HEAD_PRINT.index('MINpDAY')+1,'WALLTIMEsec')
+    
+    for H in HEAD_PRINT:
+        if H not in df.columns:
+            HEAD_PRINT.remove(H)
+    
     
     for C in HEAD_COMPS: 
-        if (C+'res' == df.columns).any():
-            HEAD_PRINT.append(C+'res')
         if (C+'mpi-t' == df.columns).any() and C not in SHARED_COMPS:
             HEAD_PRINT.append(C+'mpi-t')
-        if (C+'dt' == df.columns).any():
-            HEAD_PRINT.append(C+'dt')
-        if (C+'tracers_n' == df.columns).any():
-            HEAD_PRINT.append(C+'tracers_n')
         if C == 'ATM' and 'ATMIOmpi' in df.columns:
             HEAD_PRINT.append('ATMIOmpi')
     
@@ -53,12 +60,9 @@ def write(df, ARGS):
         TS = 'sec_max' 
     if ARGS.SHOW_PERCENT:
         TS = '%' 
-  
-    for SM in df['COMPS_SAMEPETS'][1]:
-        HEAD_PRINT.append(SM+TS)
     
     for C in HEAD_COMPS: 
-        if C+TS in df.columns:
+        if C+TS in df.columns and C not in SHARED_COMPS:
             HEAD_PRINT.append(C+TS)
     
     # if showing ATMIO stats
