@@ -3,8 +3,8 @@ import argparse
 import os
 
 class get:
-    parser = argparse.ArgumentParser(description="This script parses the stout_espc.list file to display a summary of UFS forecast timings")
-    parser.add_argument('-d', '--directory', action='store', default='NeilBarton', nargs = 1, help="top directory to search for stout_espc.list files")
+    parser = argparse.ArgumentParser(description="This script parses the log files from a global UFS forecast to display timing")
+    parser.add_argument('-d', '--directory', action='store', default='NeilBarton', nargs = 1, help="top directory to search for RUNDIRS of UFS, which need to include the ESMF Profile file")
     parser.add_argument('-sb', '--sortby', action='store', default=['MINpDAY'], nargs = 1, help='header to sort results, default is MINpDAY')
     parser.add_argument('-m', '--med', action='store_true', help='show mediator MPI, PE and Timings')
     parser.add_argument('-s', '--sec', action='store_true', help='show seconds for timings instead of Minutes Per Day')
