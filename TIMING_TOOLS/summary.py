@@ -37,7 +37,7 @@ def write(df, ARGS):
             if ((C+A == df.columns).any()) and (C != 'CHM') and (C != 'ICE'):
                 HEAD_PRINT.append(C+A)
     
-    HEAD_PRINT.extend(['FV3_32BIT', 'MINpDAY_GFS', 'MINpDAY_GEFS', 'MINpDAY', FP, 'TAU'])
+    HEAD_PRINT.extend(['FV3_32BIT', 'HYDROSTATIC', 'MINpDAY_GFS', 'MINpDAY_GEFS', 'MINpDAY', FP, 'TAU'])
     
     if ARGS.SHOW_SEC:
         HEAD_PRINT.insert(HEAD_PRINT.index('MINpDAY')+1,'UFSsec_max')

@@ -70,6 +70,12 @@ def read_model_configure(dir_name):
             DICT['ATMlayout'] = line.split(' layout = ')[-1].strip()
         if 'io_layout' in line and line[0] != '+':
             DICT['ATMiolayout'] = line.strip('io_layout =').strip()
+        if ' hydrostatic' in line and line[0] != '+':
+            DICT['HYDROSTATIC'] = line.strip(' hydrostatic =').strip()[1].upper()
+        if 'n_split' in line and line[0] != '+':
+            DICT['N_SPLIT'] = line.strip('n_split =').strip()
+        if 'k_split' in line and line[0] != '+':
+            DICT['K_SPLIT'] = line.strip('k_split =').strip()
     if 'ATMres' in DICT:
         DICT['ATMres'] = DICT['ATMres'] + 'L' + ATMlev
         DICT['CHMres'] = DICT['ATMres']
@@ -118,8 +124,9 @@ def read_field_table(dir_name):
 def read_fv_core_netcdf(dir_name):
     import xarray as xr
     import numpy as np
+    import glob
     DICT = {}
-    config_file = dir_name + '/RESTART/fv_core.res.nc' 
+    config_file = glob.glob(dir_name + '/RESTART/*fv_core.res.nc')[0]
     if os.path.exists(config_file):
         dtype = xr.open_dataset(config_file)['ak'].values.dtype
         if dtype == np.dtype('float32'):
