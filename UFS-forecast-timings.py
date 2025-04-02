@@ -8,7 +8,7 @@ import pandas as pd
 import numpy as np
 import os
 import sys
-sys.path.append(os.path.dirname(__file__) + "/TIMING_TOOLS")
+sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/TIMING_TOOLS")
 import TIMING_TOOLS as tt 
     
 if __name__ == '__main__':
