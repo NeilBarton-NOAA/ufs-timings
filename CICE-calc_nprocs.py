@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 ########################################################################
 #
 # Calculate CICE compile options for Resolutions 
@@ -37,12 +37,12 @@ GLOB={
 }
 
 if float(RES) not in GLOB.keys():
-	print 'resolution does not match known keys:'
-	print ' given resolution:'
-	print '  ', float(RES)
-	print ' known resolutions:'
+	print('resolution does not match known keys:')
+	print(' given resolution:')
+	print('  ', float(RES))
+	print(' known resolutions:')
 	for k in GLOB.keys():
-		print '  ', k
+		print('  ', k)
 	exit(1)
 
 ############################################################
@@ -57,9 +57,9 @@ BPX = 1			# number of blocks per processor in x direction (1 for straight MPI)
 BPY = 1 		# number of blocks per processor in y direction (1 for straight MPI)
 MXBLCKS = BPX * BPY
 
-print "resolution: \t " + str(RES) + " " + str(NXGLOB) + "x" + str(NYGLOB) + " (NXGLOB x NYGLOB)"
-print "processor shape: slenderX"+str(SHAPE)
-print 'nprocs\tBLCKX\tBLCKY\tMXBLCKS'
+print("resolution: \t " + str(RES) + " " + str(NXGLOB) + "x" + str(NYGLOB) + " (NXGLOB x NYGLOB)")
+print("processor shape: slenderX"+str(SHAPE))
+print('nprocs\tBLCKX\tBLCKY\tMXBLCKS')
 for N in NTASKS:
 	if (N > 1) and (N != NXGLOB) and ( (N / SHAPE) > 1):
 		NPX = N / SHAPE		#number of processors in x direction (user defined)
@@ -68,7 +68,7 @@ for N in NTASKS:
 		BLCKY = (NYGLOB / NPY) if ((NYGLOB % NPY) == 0) else ((NYGLOB / NPY) + 1)
 		MXBLCKS = (NXGLOB * NYGLOB) / (BLCKX * BLCKY * N)
 		if MXBLCKS == 0: MXBLCKS = MXBLCKS + 1
-		print str(N*SHAPE)+"\t", str(BLCKX/SHAPE)+"\t", str(BLCKY)+"\t", str(MXBLCKS)
-print 'nprocs\tBLCKX\tBLCKY\tMXBLCKS'
-print "resolution: \t " + RES + " " + str(NXGLOB) + "x" + str(NYGLOB) + " (NXGLOB x NYGLOB)"
-print "processor shape: slenderX"+str(SHAPE)
+		print(str(N*SHAPE)+"\t", str(BLCKX/SHAPE)+"\t", str(BLCKY)+"\t", str(MXBLCKS))
+print('nprocs\tBLCKX\tBLCKY\tMXBLCKS')
+print("resolution: \t " + RES + " " + str(NXGLOB) + "x" + str(NYGLOB) + " (NXGLOB x NYGLOB)")
+print("processor shape: slenderX"+str(SHAPE))

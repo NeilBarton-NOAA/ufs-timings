@@ -14,9 +14,9 @@ def write(df, ARGS):
     # filter through what to print from MODEL_header
     FP = 'NODES'
     if 'NODES' not in df.columns:
-        FP = 'PETS'
+        FP = 'PETs'
     elif np.isnan(df['NODES']).any():
-        FP = 'PETS'
+        FP = 'PETs'
     
     # list components
     HEAD_COMPS = df['COMPS'].loc[df['COMPS'].str.len().max() == df['COMPS'].str.len()].values[0]
@@ -46,7 +46,6 @@ def write(df, ARGS):
     for H in HEAD_PRINT:
         if H not in df.columns:
             HEAD_PRINT.remove(H)
-    
     
     for C in HEAD_COMPS: 
         if (C+'mpi-t' == df.columns).any() and C not in SHARED_COMPS:
@@ -136,7 +135,7 @@ def write(df, ARGS):
 
     if ARGS.SORTBY not in HEAD_PRINT:
         HEAD_PRINT.append(ARGS.SORTBY)
-
+    
     df = df.sort_values('CONFIG')
     df = df.sort_values('TAU')
     df = df.sort_values(ARGS.SORTBY)
