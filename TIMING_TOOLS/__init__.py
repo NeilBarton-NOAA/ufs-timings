@@ -82,5 +82,11 @@ def procs_not_used(DICT):
             thr = 1
         TP = TP + (mpi * thr)
     DICT['UNUSED_PROCS'] = DICT['PETs'] - TP
+    config_file = '/proc/cpuinfo'
+    for line in open(config_file,'r'):
+        if 'siblings' in line:
+            DICT['TPN'] = int(line.split(': ')[-1])
+    if 'NODES' not in DICT.keys():
+        DICT['NODES'] = round(DICT['PETs'] / DICT['TPN'])
     return DICT
 
