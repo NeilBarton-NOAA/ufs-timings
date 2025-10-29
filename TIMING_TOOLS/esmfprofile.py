@@ -51,9 +51,9 @@ def panda_addto_dict(df, DICT, MED_VAR):
             pd.options.display.max_columns = 99
             pd.options.display.width = 500
             pd.options.display.colheader_justify = 'center'
-            if (df['Region'] == 'fv3_fcst').any():
-                DICT[C+'mpi'] = int(df['PETs'].where(df['Region'] == 'fv3_fcst').max())
-                DICT[C+'pe'] = int(df['PEs'].where(df['Region'] == 'fv3_fcst').max()) 
+            if (df['Region'] == 'ufsatm_fcst').any():
+                DICT[C+'mpi'] = int(df['PETs'].where(df['Region'] == 'ufsatm_fcst').max())
+                DICT[C+'pe'] = int(df['PEs'].where(df['Region'] == 'ufsatm_fcst').max()) 
                 try:
                     DICT['ATMIOmpi'] = int(df['PETs'].where(df['Region'] == 'wrtComp_01').max())
                     DICT['ATMIOpe'] = int(df['PEs'].where(df['Region'] == 'wrtComp_01').max())
@@ -85,14 +85,14 @@ def panda_addto_dict(df, DICT, MED_VAR):
                 / 60) / (DICT['TAU'] / 24.), 1)
         else:
             if C == 'ATM':
-                DICT[C+'sec_mean'] = round(df[df['Region'] == 'fv3_fcst'].loc[df['Count'] == LOOP].sum()['Mean (s)'],1)
-                DICT[C+'sec_max'] = round(df[df['Region'] == 'fv3_fcst']\
-                    .loc[(df['Count'] == LOOP)].sum()['Max (s)'],1)
-                DICT[C+'%'] = round(df[df['Region'] == 'fv3_fcst']\
-                    .loc[(df['Count'] == LOOP)].sum()['Max (s)']\
+                DICT[C+'sec_mean'] = round(df[df['Region'] == 'ufsatm_fcst'].loc[df['Count'] == LOOP].max()['Mean (s)'],1)
+                DICT[C+'sec_max'] = round(df[df['Region'] == 'ufsatm_fcst']\
+                    .loc[(df['Count'] == LOOP)].max()['Max (s)'],1)
+                DICT[C+'%'] = round(df[df['Region'] == 'ufsatm_fcst']\
+                    .loc[(df['Count'] == LOOP)].max()['Max (s)']\
                     /DICT['UFSsec_max']*100.,1)
-                DICT[C+'_MpD'] = round((df[df['Region'] == 'fv3_fcst']\
-                    .loc[(df['Count'] == LOOP)].sum()['Max (s)']\
+                DICT[C+'_MpD'] = round((df[df['Region'] == 'ufsatm_fcst']\
+                    .loc[(df['Count'] == LOOP)].max()['Max (s)']\
                     /60.) / (DICT['TAU'] / 24.),1)
             else:
                 DICT[C+'sec_mean'] = round(df[df['Region'] == C]\

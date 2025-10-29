@@ -156,16 +156,12 @@ def write(df, ARGS):
     f.close()
     df_sum.to_string('temp1.txt', index=False, header=False)
     
-    if df.shape[0] > 1:
-        df[HEAD_PRINT].to_string('temp2.txt') 
-        with open(fw,'a') as outfile:
-            for f in ['temp1.txt', 'temp2.txt']:
-                with open(f) as infile:
-                    outfile.write('\n')
-                    outfile.write(infile.read())
-                    outfile.write('\n')
-                os.remove(f)
-    else:
-        os.remove('temp1.txt')
+    df[HEAD_PRINT].to_string('temp2.txt') 
+    with open(fw,'a') as outfile:
+        for f in ['temp1.txt', 'temp2.txt']:
+            with open(f) as infile:
+                outfile.write('\n')
+                outfile.write(infile.read())
+                outfile.write('\n')
+            os.remove(f)
    
-
