@@ -8,12 +8,12 @@ import pandas as pd
 import numpy as np
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/TIMING_TOOLS")
+tools_path = os.path.join(os.path.realpath(__file__), 'TIMING_TOOLS')
+sys.path.insert(0, tools_path)
 import TIMING_TOOLS as tt 
     
 if __name__ == '__main__':
     ARGS = tt.args.get()
-    
     files = tt.esmfprofile.getfiles(ARGS.TOPDIR)
     # get data from each file/directory maybe parralize this
     MODEL_SUMMARY, MODEL_header, MED_VARS = [], [], []

@@ -1,28 +1,15 @@
 import glob
 import numpy as np
 import pandas as pd
+from pathlib import Path
 
 ####################################
 # search for ESMF_Profile.summary files
 def getfiles(TOPDIR):
-    s = 0
     files = []
-    search = ''
     print('searching for namelist files in:', TOPDIR)
-    while (s < 4 ):
-        test_dir = TOPDIR + search + '/'
-        if len(glob.glob(test_dir)) == 0:
-            if s == 0:
-                print('directory does not exist:', test_dir)
-            s = 9999
-        search = search + '/*'
-        text_search = TOPDIR + search + 'ESMF_Profile.summary'
-        s_files = glob.glob(text_search)
-        if len(s_files) > 0:
-            files.extend(s_files)
-            s += 1
-        if (s > 0) and len(s_files) == 0:
-            s += 1       
+    for path in Path(TOPDIR).rglob('ESMF_Profile.summary'):
+        files.append(str(path))
     if len(files) == 0:        
         print('no ESMF_Profile.summary files found')
         exit(1)

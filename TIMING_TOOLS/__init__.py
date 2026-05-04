@@ -1,4 +1,4 @@
-import args, esmfprofile, namelists, plot, summary
+from . import args, esmfprofile, namelists, plot, summary
 
 ####################################
 def nameruns(DICT):
